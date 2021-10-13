@@ -45,6 +45,19 @@ public class HomePageInitializeTest {
 		// check price value zero
 		String priceText = homePageObjects.getPriceText();
 		validateElemIntZero("Price", priceText);
+
+		checkProducts();
+	}
+
+	public void checkProducts() {
+		String[] productArr = { "Brocolli", "Potato", "Mango" };
+		int[] priceArr = { 120, 22, 75 };
+		for (int i = 0; i < productArr.length; i++) {
+			String productName = productArr[i];
+			homePageObjects.getProduct(productName);
+			String price = homePageObjects.getProductPrice(productName);
+			assertEquals(Integer.parseInt(price), priceArr[i], productName + " has incorrect price");
+		}
 	}
 
 	// Check element value is zero
