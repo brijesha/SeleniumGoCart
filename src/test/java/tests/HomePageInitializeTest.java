@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pageObjects.HomePageObjects;
@@ -25,13 +26,13 @@ public class HomePageInitializeTest {
 		driver = new FirefoxDriver();
 		driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
 		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		
+		homePageObjects = new HomePageObjects(driver);
 		// driver.manage().window().fullscreen();
 	}
 
 	@Test
 	public void pageLoadTest() {
-		homePageObjects = new HomePageObjects(driver);
-
 		// check empty cart
 		homePageObjects.cartImgClick();
 		String cartMsg = homePageObjects.getEmptyCartMsg();
@@ -45,19 +46,18 @@ public class HomePageInitializeTest {
 		// check price value zero
 		String priceText = homePageObjects.getPriceText();
 		validateElemIntZero("Price", priceText);
-
-		checkProducts();
 	}
 
-	public void checkProducts() {
-		String[] productArr = { "Brocolli", "Potato", "Mango" };
-		int[] priceArr = { 120, 22, 75 };
-		for (int i = 0; i < productArr.length; i++) {
-			String productName = productArr[i];
-			homePageObjects.getProduct(productName);
-			String price = homePageObjects.getProductPrice(productName);
-			assertEquals(Integer.parseInt(price), priceArr[i], productName + " has incorrect price");
-		}
+	@Test(dataProvider = "productData")
+	public void checkProducts(String productName, int productPrice) {
+		homePageObjects.getProduct(productName);
+		String price = homePageObjects.getProductPrice(productName);
+		assertEquals(Integer.parseInt(price), productPrice, productName + " has incorrect price");
+	}
+
+	@DataProvider(name = "productData")
+	public Object[][] createData() {
+		return new Object[][] { { "Brocolli", 120 }, { "Potato", 22 }, { "Mango", 75 } };
 	}
 
 	// Check element value is zero
