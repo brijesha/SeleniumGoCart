@@ -12,7 +12,8 @@ public class HomePageObjects {
 	By emptyCartMsg = By.xpath("//div[@class='empty-cart']//h2");
 	By items = By.xpath("//div[@class='cart-info']//td[contains(text(),'Items')]/following-sibling::td[2]//strong");
 	By price = By.xpath("//div[@class='cart-info']//td[contains(text(),'Price')]/following-sibling::td[2]//strong");
-
+	By searchInput = By.className("search-keyword");
+	
 	public HomePageObjects(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -40,4 +41,9 @@ public class HomePageObjects {
 	public String getProductPrice(String productName) {
 		return driver.findElement(By.xpath("//h4[contains(text(),'"+productName+"')]/following-sibling::p")).getText();
 	}
+	
+	public WebElement getSearchInput() {
+		return driver.findElement(searchInput);
+	}
+	
 }
