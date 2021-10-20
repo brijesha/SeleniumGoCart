@@ -1,5 +1,7 @@
 package tests;
 
+import static org.testng.Assert.fail;
+
 import java.io.FileInputStream;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -26,31 +28,45 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 
 	@DataProvider(name = "searchDataExcel")
 	public Object[][] createData() throws Exception {
-		Object[][] object = null;
+		Object[][] objectArr = null;
+		FileInputStream fis = null;
+		XSSFWorkbook workbook = null;
 
-		// location of excelsheet
-		FileInputStream fis = new FileInputStream("C:\\Users\\Brijesha\\Downloads\\DataSheet.xlsx");
-		// object of excelsheet
-		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+		try {
+			// location of excelsheet
+			fis = new FileInputStream("D:\\eclipseworkspace\\cart\\DataSheet.xlsx");
+			// object of excelsheet
+			workbook = new XSSFWorkbook(fis);
 
-		// get correct sheet from number of sheets
-		int sheets = workbook.getNumberOfSheets();
-		for (int i = 0; i < sheets; i++) {
-			if (workbook.getSheetName(i).equals("search")) {
-				XSSFSheet sheet = workbook.getSheetAt(i);
-				// iterating rows
-				int firstRowNumber = sheet.getFirstRowNum();
-				int lastRowNumber = sheet.getLastRowNum();
-				for (int j = firstRowNumber; j <= lastRowNumber; j++) {
-					XSSFRow row = sheet.getRow(j);
-					// finding column value
-					for (int k = 0; k < row.getLastCellNum(); k++) {
-						object[j][k] = row.getCell(k).toString();
+			// get correct sheet from number of sheets
+			int sheets = workbook.getNumberOfSheets();
+			for (int sheetIndex = 0; sheetIndex < sheets; sheetIndex++) {
+				if (workbook.getSheetName(sheetIndex).equals("search")) {
+					XSSFSheet sheet = workbook.getSheetAt(sheetIndex);
+					int lastRowNumber = sheet.getLastRowNum();
+					objectArr = new Object[lastRowNumber][3];
+
+					// iterating rows (skipping top row)
+					for (int rowIndex = 1; rowIndex <= lastRowNumber; rowIndex++) {
+						XSSFRow excelRow = sheet.getRow(rowIndex);
+						
+						// take row array
+						Object[] dataRowArr = objectArr[rowIndex - 1];
+						dataRowArr[0] = excelRow.getCell(0).getStringCellValue();
+						dataRowArr[1] = excelRow.getCell(1).getStringCellValue();
+						dataRowArr[2] = (int) (excelRow.getCell(2).getNumericCellValue());
 					}
 				}
 			}
+		} catch (Exception e) {
+			fail("Exception reading data from excel", e);
+		} finally {
+			if (workbook != null)
+				workbook.close();
+			if (fis != null)
+				fis.close();
 		}
-		return object;
+		return objectArr;
 
 		/*
 		 * return new Object[][] { { "or", "Corn", 75 }, { "or", "Orange", 75 }, { "ca",
