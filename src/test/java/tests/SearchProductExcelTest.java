@@ -2,7 +2,7 @@ package tests;
 
 import static org.testng.Assert.fail;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,14 +29,14 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 	@DataProvider(name = "searchDataExcel")
 	public Object[][] createData() throws Exception {
 		Object[][] objectArr = null;
-		FileInputStream fis = null;
+		InputStream is = null;
 		XSSFWorkbook workbook = null;
 
 		try {
 			// location of excelsheet
-			fis = new FileInputStream("D:\\eclipseworkspace\\cart\\DataSheet.xlsx");
+			is = getClass().getResourceAsStream("/DataSheet.xlsx");
 			// object of excelsheet
-			workbook = new XSSFWorkbook(fis);
+			workbook = new XSSFWorkbook(is);
 
 			// get correct sheet from number of sheets
 			int sheets = workbook.getNumberOfSheets();
@@ -49,7 +49,7 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 					// iterating rows (skipping top row)
 					for (int rowIndex = 1; rowIndex <= lastRowNumber; rowIndex++) {
 						XSSFRow excelRow = sheet.getRow(rowIndex);
-						
+
 						// take row array
 						Object[] dataRowArr = objectArr[rowIndex - 1];
 						dataRowArr[0] = excelRow.getCell(0).getStringCellValue();
@@ -63,16 +63,11 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 		} finally {
 			if (workbook != null)
 				workbook.close();
-			if (fis != null)
-				fis.close();
+			if (is != null)
+				is.close();
 		}
+		
 		return objectArr;
-
-		/*
-		 * return new Object[][] { { "or", "Corn", 75 }, { "or", "Orange", 75 }, { "ca",
-		 * "Cauliflower", 60 }, { "ca", "Carrot", 56 }, { "ca", "Capsicum", 60 }, {
-		 * "ca", "Cashew", 650 } };
-		 */
 	}
 
 }
