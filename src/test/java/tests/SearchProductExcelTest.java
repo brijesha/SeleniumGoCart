@@ -39,8 +39,8 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 			workbook = new XSSFWorkbook(is);
 
 			// get correct sheet from number of sheets
-			int sheets = workbook.getNumberOfSheets();
-			for (int sheetIndex = 0; sheetIndex < sheets; sheetIndex++) {
+			int numOfSheets = workbook.getNumberOfSheets();
+			for (int sheetIndex = 0; sheetIndex < numOfSheets; sheetIndex++) {
 				if (workbook.getSheetName(sheetIndex).equals("search")) {
 					XSSFSheet sheet = workbook.getSheetAt(sheetIndex);
 					int lastRowNumber = sheet.getLastRowNum();
