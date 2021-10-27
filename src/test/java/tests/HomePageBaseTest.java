@@ -8,12 +8,14 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import pageObjects.HomePageObjects;
+import pageObjects.PlaceOrderPageObjects;
 import util.Utility;
 
 public class HomePageBaseTest {
 	
 	WebDriver driver;
 	HomePageObjects homePageObjects;
+	PlaceOrderPageObjects placeOrderPageObjects;
 	
 	@BeforeTest
 	public void createDriver() {
@@ -24,6 +26,7 @@ public class HomePageBaseTest {
 		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
 		
 		homePageObjects = new HomePageObjects(driver);
+		placeOrderPageObjects = new PlaceOrderPageObjects(driver);
 		// driver.manage().window().fullscreen();
 	}
 	
