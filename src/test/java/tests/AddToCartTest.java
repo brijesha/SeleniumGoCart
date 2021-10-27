@@ -9,50 +9,56 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import util.Utility;
 
 public class AddToCartTest extends HomePageBaseTest {
-	@Test
-	public void addProduct() {
+	
+	@Test(dataProvider = "addToCartData")
+	public void addProduct(String item, int numItem, int price, int counter) {
 		String[] productName = { "Cucumber", "Beans" };
+		if (counter == 0) {
+			homePageObjects.addToCartBtn(item).click();
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.MILLISECONDS);
 
-		homePageObjects.addToCartBtn(productName[0]).click();
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.MILLISECONDS);
-		assertNotEquals(homePageObjects.addToCartBtn(productName[0]).getCssValue("background-color"), "rgb(7, 121, 21)",
-				"Add to cart button color not changed.");
-		String changedText[] = homePageObjects.addToCartBtn(productName[0]).getText().split(" ");
-		assertEquals(changedText[1], "ADDED", "Add to cart button text not changed");
-		itemsAndPricesCheckInCart(1, 48);
+			if (item.equals("Cucumber")) {
+				assertNotEquals(homePageObjects.addToCartBtn(item).getCssValue("background-color"), "rgb(7, 121, 21)",
+						"Add to cart button color not changed.");
+				String changedText[] = homePageObjects.addToCartBtn(item).getText().split(" ");
+				assertEquals(changedText[1], "ADDED", "Add to cart button text not changed");
 
-		homePageObjects.incrementBtn(productName[0]).click();
-		homePageObjects.addToCartBtn(productName[0]).click();
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
-		itemsAndPricesCheckInCart(1, 144);
+			}
+			itemsAndPricesCheckInCart(numItem, price);
+		} else {
+			homePageObjects.incrementBtn(productName[0]).click();
+			homePageObjects.addToCartBtn(productName[0]).click();
+			driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
+			itemsAndPricesCheckInCart(numItem, price);
+		}
+	}
 
-		homePageObjects.addToCartBtn(productName[1]).click();
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
-		itemsAndPricesCheckInCart(2, 226);
-
+	@Test
+	public void checkCartItems() {
 		homePageObjects.cartImgClick();
+		String[] itemsArr = {"Cucumber","Beans"};
 
 		List<WebElement> cartItemsElems = homePageObjects.cartItems();
 		for (int i = 0; i < cartItemsElems.size(); i++) {
 			String itemName = cartItemsElems.get(i).findElement(By.className("product-name")).getText();
-			for (int j = 0; j < productName.length; j++) {
+			for (int j = 0; j < itemsArr.length; j++) {
 				if (i == j) {
-					if (!(itemName.contains(productName[j]))) {
-						fail(productName[j]+" is not added to cart.");
+					if (!(itemName.contains(itemsArr[j]))) {
+						fail(itemsArr[j] + " is not added to cart.");
 					}
 				}
 			}
-
 		}
-		//remove item from list
-		for(int i=0;i<cartItemsElems.size();i++) {
+		// remove item from list
+		for (int i = 0; i < cartItemsElems.size(); i++) {
 			String itemName = cartItemsElems.get(i).findElement(By.className("product-name")).getText();
-			if(itemName.contains(productName[1])) {
+			if (itemName.contains(itemsArr[1])) {
 				cartItemsElems.get(i).findElement(By.className("product-remove")).click();
 				break;
 			}
@@ -60,6 +66,11 @@ public class AddToCartTest extends HomePageBaseTest {
 		itemsAndPricesCheckInCart(1, 144);
 	}
 
+	@DataProvider(name = "addToCartData")
+	public Object cartData() {
+		return new Object[][] { { "Cucumber", 1, 48, 0 }, { "Cucumber", 1, 144, 1 }, { "Beans", 2, 226, 0 } };
+	}
+	
 	public void itemsAndPricesCheckInCart(int numItems, int price) {
 		// check items value
 		String itemsText = homePageObjects.getItemsText();
@@ -71,3 +82,13 @@ public class AddToCartTest extends HomePageBaseTest {
 	}
 
 }
+
+
+
+/*
+ * itemsAndPricesCheckInCart(1, 144);
+ * 
+ * homePageObjects.addToCartBtn(productName[1]).click();
+ * driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
+ * itemsAndPricesCheckInCart(2, 226);
+ */
