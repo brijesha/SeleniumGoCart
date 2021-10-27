@@ -16,6 +16,7 @@ public class HomePageObjects {
 	By price = By.xpath("//div[@class='cart-info']//td[contains(text(),'Price')]/following-sibling::td[2]//strong");
 	By searchInput = By.className("search-keyword");
 	By cartItems= By.xpath("//div[@class='cart-preview active']/div/div/ul/li");
+	By checkoutBtn = By.xpath("//div[@class='cart-preview active']/div[2]/button");
 	
 	public HomePageObjects(WebDriver driver) {
 		this.driver = driver;
@@ -61,7 +62,9 @@ public class HomePageObjects {
 		return (List<WebElement>) driver.findElements(cartItems);
 	}
 	
-	
+	public WebElement checkoutBtn() {
+		return driver.findElement(checkoutBtn);
+	}
 	
 	
 }
