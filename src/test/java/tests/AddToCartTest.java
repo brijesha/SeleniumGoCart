@@ -18,7 +18,6 @@ public class AddToCartTest extends HomePageBaseTest {
 	
 	@Test(dataProvider = "addToCartData")
 	public void addProduct(String item, int numItem, int price, int counter) {
-		String[] productName = { "Cucumber", "Beans" };
 		if (counter == 0) {
 			homePageObjects.addToCartBtn(item).click();
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.MILLISECONDS);
@@ -32,8 +31,8 @@ public class AddToCartTest extends HomePageBaseTest {
 			}
 			itemsAndPricesCheckInCart(numItem, price);
 		} else {
-			homePageObjects.incrementBtn(productName[0]).click();
-			homePageObjects.addToCartBtn(productName[0]).click();
+			homePageObjects.incrementBtn(item).click();
+			homePageObjects.addToCartBtn(item).click();
 			driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
 			itemsAndPricesCheckInCart(numItem, price);
 		}
@@ -82,13 +81,3 @@ public class AddToCartTest extends HomePageBaseTest {
 	}
 
 }
-
-
-
-/*
- * itemsAndPricesCheckInCart(1, 144);
- * 
- * homePageObjects.addToCartBtn(productName[1]).click();
- * driver.manage().timeouts().implicitlyWait(2, TimeUnit.MILLISECONDS);
- * itemsAndPricesCheckInCart(2, 226);
- */
