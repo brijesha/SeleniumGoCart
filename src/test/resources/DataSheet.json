@@ -1,0 +1,32 @@
+[
+	{
+		"searchTerm": "or",
+		"productName": "Corn",
+		"price":75
+	},
+	{
+		"searchTerm": "or",
+		"productName": "Orange",
+		"price":75
+	},
+	{
+		"searchTerm": "ca",
+		"productName": "Cauliflower",
+		"price":60
+	},
+	{
+		"searchTerm": "ca",
+		"productName": "Carrot",
+		"price":56
+	},
+	{
+		"searchTerm": "ca",
+		"productName": "Capsicum",
+		"price":60
+	},
+	{
+		"searchTerm": "ca",
+		"productName": "Cashew",
+		"price":650
+	}
+]
