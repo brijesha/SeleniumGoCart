@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
+import pageObjects.CheckoutPageObjects;
 import pageObjects.HomePageObjects;
 import pageObjects.PlaceOrderPageObjects;
 import util.Utility;
@@ -16,6 +17,7 @@ public class HomePageBaseTest {
 	WebDriver driver;
 	HomePageObjects homePageObjects;
 	PlaceOrderPageObjects placeOrderPageObjects;
+	CheckoutPageObjects checkoutPageObject;
 	
 	@BeforeTest
 	public void createDriver() {
@@ -27,6 +29,7 @@ public class HomePageBaseTest {
 		
 		homePageObjects = new HomePageObjects(driver);
 		placeOrderPageObjects = new PlaceOrderPageObjects(driver);
+		checkoutPageObject = new CheckoutPageObjects(driver);
 		// driver.manage().window().fullscreen();
 	}
 	
