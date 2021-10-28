@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeTest;
 import pageObjects.CheckoutPageObjects;
 import pageObjects.HomePageObjects;
 import pageObjects.PlaceOrderPageObjects;
+import pageObjects.TopDealsPageObjects;
 import util.Utility;
 
 public class HomePageBaseTest {
@@ -18,6 +19,7 @@ public class HomePageBaseTest {
 	HomePageObjects homePageObjects;
 	PlaceOrderPageObjects placeOrderPageObjects;
 	CheckoutPageObjects checkoutPageObject;
+	TopDealsPageObjects topDealPageObject;
 	
 	@BeforeTest
 	public void createDriver() {
@@ -26,11 +28,12 @@ public class HomePageBaseTest {
 		driver = new FirefoxDriver();
 		driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
 		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
-		
+	
+		// Provide value to object
 		homePageObjects = new HomePageObjects(driver);
 		placeOrderPageObjects = new PlaceOrderPageObjects(driver);
 		checkoutPageObject = new CheckoutPageObjects(driver);
-		// driver.manage().window().fullscreen();
+		topDealPageObject = new TopDealsPageObjects(driver);
 	}
 	
 	public void checkProduct(String productName, int expectedProductPrice) {
