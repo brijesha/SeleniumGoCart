@@ -14,13 +14,11 @@ public class TopDealsPageObjects {
 	By rows = By.cssSelector("tbody tr");
 	By firstBtn = By.xpath("//a[@aria-label='First']");
 	By previousBtn = By.xpath("//a[@aria-label='Previous']");
-	/*By oneBtn = By.xpath("//span[contains(text(),'1')]");
-	By secondBtn = By.xpath("//span[contains(text(),'2')]");
-	By thirdBtn = By.xpath("//span[contains(text(),'3')]");
-	By forthBtn = By.xpath("//span[contains(text(),'4')]");*/
-	/*By nextBtn = By.xpath("//a[@aria-label='Next']");
-	By lastBtn = By.xpath("//a[@aria-label='Last']");*/
-
+	By pineapple = By.xpath("//td[contains(text(),'Pineapple')]");
+	By search = By.id("search-field");
+	By productHeader = By.xpath("//thead/tr[1]/th[1]");
+	By discountPriceHeader = By.xpath("//thead/tr[1]/th[3]");
+	
 	public TopDealsPageObjects(WebDriver driver) {
 		// TODO Auto-generated constructor stub
 		this.driver = driver;
@@ -43,25 +41,27 @@ public class TopDealsPageObjects {
 	}
 	
 	public WebElement paginationBtn(String val) {
-		return driver.findElement(By.xpath("//span[contains(text(),val)]"));
+		return driver.findElement(By.xpath("//span[contains(text(),'"+val+"')]"));
 	}
 	
 	public WebElement nextLastBtn(String val) {
-		return driver.findElement(By.xpath("//a[@aria-label=val]"));
+		return driver.findElement(By.xpath("//a[@aria-label='" + val + "']"));
 	}
-	/*public WebElement secondBtn() {
-		return driver.findElement(secondBtn);
+	
+	public WebElement pineapple() {
+		return driver.findElement(pineapple);
 	}
-	public WebElement thirdBtn() {
-		return driver.findElement(thirdBtn);
+	
+	public WebElement search() {
+		return driver.findElement(search);
 	}
-	public WebElement forthBtn() {
-		return driver.findElement(forthBtn);
-	}*/
-	/*public WebElement nextBtn() {
-		return driver.findElement(nextBtn);
+
+	public WebElement productHeader() {
+		return driver.findElement(productHeader);
 	}
-	public WebElement lastBtn() {
-		return driver.findElement(lastBtn);*/
-/*	}*/
+	
+	public WebElement discountPriceHeader() {
+		return driver.findElement(discountPriceHeader);
+	}
+	
 }
