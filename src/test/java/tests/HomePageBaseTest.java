@@ -3,6 +3,7 @@ package tests;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -36,10 +37,28 @@ public class HomePageBaseTest {
 		topDealPageObject = new TopDealsPageObjects(driver);
 	}
 	
-	public void checkProduct(String productName, int expectedProductPrice) {
+	public void checkProductExist(String productName, int expectedProductPrice) {
+		// check if product element exists on page
 		homePageObjects.getProduct(productName);
+		
+		// verify price match
 		String priceStr = homePageObjects.getProductPrice(productName);
 		Utility.checkStrEqualsInt(priceStr, expectedProductPrice, productName + " price ");
+	}
+
+	public void searchProduct(String toSearch, String productName, int expectedPrice) {
+		WebElement searchInput = homePageObjects.getSearchInput();
+
+		// get existing value of searchbox
+		String searchInputValue = searchInput.getAttribute("value");
+
+		// if present value is not the desired one, replace it
+		if (!toSearch.equals(searchInputValue)) {
+			searchInput.clear();
+			searchInput.sendKeys(toSearch);
+		}
+
+		checkProductExist(productName, expectedPrice);
 	}
 	
 	@AfterTest

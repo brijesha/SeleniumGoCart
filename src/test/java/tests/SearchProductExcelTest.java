@@ -7,7 +7,6 @@ import java.io.InputStream;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,15 +14,7 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 
 	@Test(dataProvider = "searchDataExcel")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		WebElement searchInput = homePageObjects.getSearchInput();
-		// check value of searchbox
-		String searchInputValue = searchInput.getAttribute("value");
-
-		if (!toSearch.equals(searchInputValue)) {
-			searchInput.clear();
-			searchInput.sendKeys(toSearch);
-		}
-		checkProduct(productName, expectedPrice);
+		searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataExcel")

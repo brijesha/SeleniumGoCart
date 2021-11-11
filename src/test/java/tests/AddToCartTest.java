@@ -66,7 +66,7 @@ public class AddToCartTest extends HomePageBaseTest {
 	}
 
 	@DataProvider(name = "addToCartData")
-	public Object cartData() {
+	public Object[][] cartData() {
 		return new Object[][] { { "Cucumber", 1, 48, 0 }, { "Cucumber", 1, 144, 1 }, { "Beans", 2, 226, 0 } };
 	}
 	

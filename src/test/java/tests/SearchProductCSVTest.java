@@ -3,7 +3,6 @@ package tests;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -11,15 +10,7 @@ public class SearchProductCSVTest extends HomePageBaseTest {
 
 	@Test(dataProvider = "searchDataCSV")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		WebElement searchInput = homePageObjects.getSearchInput();
-		// check value of searchbox
-		String searchInputValue = searchInput.getAttribute("value");
-
-		if (!toSearch.equals(searchInputValue)) {
-			searchInput.clear();
-			searchInput.sendKeys(toSearch);
-		}
-		checkProduct(productName, expectedPrice);
+		searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataCSV")

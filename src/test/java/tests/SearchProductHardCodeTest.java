@@ -1,6 +1,5 @@
 package tests;
 
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -8,15 +7,7 @@ public class SearchProductHardCodeTest extends HomePageBaseTest {
 
 	@Test(dataProvider = "searchDataHardCode")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		WebElement searchInput = homePageObjects.getSearchInput();
-		// check value of searchbox
-		String searchInputValue = searchInput.getAttribute("value");
-		
-		if (!toSearch.equals(searchInputValue)) {
-			searchInput.clear();
-			searchInput.sendKeys(toSearch);
-		}
-		checkProduct(productName, expectedPrice);
+		searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataHardCode")

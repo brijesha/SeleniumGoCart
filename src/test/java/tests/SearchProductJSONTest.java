@@ -5,7 +5,6 @@ import java.io.FileReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -13,15 +12,7 @@ public class SearchProductJSONTest extends HomePageBaseTest {
 
 	@Test(dataProvider = "searchDataJSON")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		WebElement searchInput = homePageObjects.getSearchInput();
-		// check value of searchbox
-		String searchInputValue = searchInput.getAttribute("value");
-
-		if (!toSearch.equals(searchInputValue)) {
-			searchInput.clear();
-			searchInput.sendKeys(toSearch);
-		}
-		checkProduct(productName, expectedPrice);
+		searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataJSON")
