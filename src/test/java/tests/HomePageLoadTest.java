@@ -21,13 +21,7 @@ public class HomePageLoadTest extends HomePageBaseTest {
 		// close the cart pop-up
 		homePageObjects.cartImgClick();
 
-		// check items value zero
-		String itemsText = homePageObjects.getItemsText();
-		Utility.checkStrEqualsInt(itemsText, 0, "Items");
-
-		// check price value zero
-		String priceText = homePageObjects.getPriceText();
-		Utility.checkStrEqualsInt(priceText, 0, "Price");
+		verifyCartTotals(0, 0);
 	}
 
 	@Test(dataProvider = "productData")

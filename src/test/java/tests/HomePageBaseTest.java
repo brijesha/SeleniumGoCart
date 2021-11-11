@@ -61,6 +61,16 @@ public class HomePageBaseTest {
 		checkProductExist(productName, expectedPrice);
 	}
 	
+	public void verifyCartTotals(int numItems, int price) {
+		// check items value
+		String itemsText = homePageObjects.getItemsText();
+		Utility.checkStrEqualsInt(itemsText, numItems, "Items");
+
+		// check price value
+		String priceText = homePageObjects.getPriceText();
+		Utility.checkStrEqualsInt(priceText, price, "Price");
+	}
+	
 	@AfterTest
 	public void tearDown() {
 		try {driver.close();} catch (Exception e1) {}
