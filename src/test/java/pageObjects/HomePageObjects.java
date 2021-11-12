@@ -17,6 +17,7 @@ public class HomePageObjects {
 	By searchInput = By.className("search-keyword");
 	By cartItems= By.xpath("//div[@class='cart-preview active']//li[@class='cart-item']");
 	By checkoutBtn = By.xpath("//div[@class='cart-preview active']/div[2]/button");
+	By productName = By.className("product-name");
 	
 	public HomePageObjects(WebDriver driver) {
 		this.driver = driver;
@@ -66,5 +67,12 @@ public class HomePageObjects {
 		return driver.findElement(checkoutBtn);
 	}
 	
+	public String getProductName(WebElement cartItemElem) {
+		return cartItemElem.findElement(productName).getText();
+	}
+	
+	public void removeProductFromCart(String productName) {
+		driver.findElement(By.xpath("//div[@class='cart-preview active']//li[@class='cart-item']//p[contains(text(),'"+ productName +"')]/parent::div/following-sibling::a")).click();
+	}
 	
 }

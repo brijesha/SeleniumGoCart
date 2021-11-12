@@ -48,25 +48,23 @@ public class AddToCartTest extends HomePageBaseTest {
 		List<WebElement> cartItemsElems = homePageObjects.cartItems();
 		assertFalse(cartItemsElems.isEmpty(), "Cart empty.");
 
-		// check items in cart
+		// check number of items in cart should match expected items size
 		String[] expectedItemsArr = { "Cucumber", "Beans" };
 		assertEquals(cartItemsElems.size(), expectedItemsArr.length, "Items in the cart are mismatch.");
 
+		// check items in cart are as expected and in order
 		for (int i = 0; i < cartItemsElems.size(); i++) {
-			String cartItemName = cartItemsElems.get(i).findElement(By.className("product-name")).getText();
+			WebElement cartItemElem = cartItemsElems.get(i);
+			String cartItemName = homePageObjects.getProductName(cartItemElem);
 			String expectedItemName = expectedItemsArr[i];
 			assertTrue(cartItemName.contains(expectedItemName),
 					expectedItemName + " is not found in cart or not in the right place.");
 		}
 
-		// remove item from list
-		for (int i = 0; i < cartItemsElems.size(); i++) {
-			String itemName = cartItemsElems.get(i).findElement(By.className("product-name")).getText();
-			if (itemName.contains(expectedItemsArr[1])) {
-				cartItemsElems.get(i).findElement(By.className("product-remove")).click();
-				break;
-			}
-		}
+		// remove item from cart
+		homePageObjects.removeProductFromCart("Beans");
+
+		// verify cart total
 		verifyCartTotals(1, 144);
 	}
 
