@@ -4,12 +4,10 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -17,10 +15,10 @@ import org.testng.annotations.Test;
 public class AddToCartTest extends HomePageBaseTest {
 
 	@Test(dataProvider = "addToCartData", priority = 0)
-	public void addProduct(String item, int numItem, int price, boolean shouldPressIncrementBtn) {
-		final WebElement addToCartBtn = homePageObjects.addToCartBtn(item);
+	public void addProduct(String itemName, int numItems, int totalPrice, boolean shouldPressIncrementBtn) {
+		final WebElement addToCartBtn = homePageObjects.addToCartBtn(itemName);
 		if (shouldPressIncrementBtn) {
-			homePageObjects.incrementBtn(item).click();
+			homePageObjects.incrementBtn(itemName).click();
 		}
 
 		addToCartBtn.click();
@@ -28,7 +26,7 @@ public class AddToCartTest extends HomePageBaseTest {
 		// allow enough time for button color to change
 		driver.manage().timeouts().implicitlyWait(300, TimeUnit.MILLISECONDS);
 
-		// add to cart button background color should change
+		// "add to cart" button background color should change
 		String greenColorRGB = "rgb(7, 121, 21)";
 		String addToCartBkColor = addToCartBtn.getCssValue("background-color");
 		assertNotEquals(addToCartBkColor, greenColorRGB, "Add to cart button color not changed.");
@@ -36,7 +34,7 @@ public class AddToCartTest extends HomePageBaseTest {
 		// add to cart button text should be updated to "ADDED"
 		assertTrue(addToCartBtn.getText().contains("ADDED"), "Add to cart button text not updated");
 
-		verifyCartTotals(numItem, price);
+		verifyCartTotals(numItems, totalPrice);
 	}
 
 	@Test(priority = 1)
@@ -48,8 +46,9 @@ public class AddToCartTest extends HomePageBaseTest {
 		List<WebElement> cartItemsElems = homePageObjects.cartItems();
 		assertFalse(cartItemsElems.isEmpty(), "Cart empty.");
 
-		// check number of items in cart should match expected items size
 		String[] expectedItemsArr = { "Cucumber", "Beans" };
+
+		// check number of items in cart should match expected items size
 		assertEquals(cartItemsElems.size(), expectedItemsArr.length, "Items in the cart are mismatch.");
 
 		// check items in cart are as expected and in order
