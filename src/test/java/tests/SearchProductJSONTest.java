@@ -8,11 +8,11 @@ import org.json.simple.parser.JSONParser;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchProductJSONTest extends HomePageBaseTest {
+public class SearchProductJSONTest extends BaseTest {
 
 	@Test(dataProvider = "searchDataJSON")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		searchProduct(toSearch, productName, expectedPrice);
+		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataJSON")

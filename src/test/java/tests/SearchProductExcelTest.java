@@ -10,11 +10,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchProductExcelTest extends HomePageBaseTest {
+public class SearchProductExcelTest extends BaseTest {
 
 	@Test(dataProvider = "searchDataExcel")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		searchProduct(toSearch, productName, expectedPrice);
+		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataExcel")
@@ -57,7 +57,7 @@ public class SearchProductExcelTest extends HomePageBaseTest {
 			if (is != null)
 				is.close();
 		}
-		
+
 		return objectArr;
 	}
 

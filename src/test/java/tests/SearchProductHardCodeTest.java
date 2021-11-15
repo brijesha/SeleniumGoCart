@@ -3,11 +3,11 @@ package tests;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchProductHardCodeTest extends HomePageBaseTest {
-
+public class SearchProductHardCodeTest extends BaseTest {
+	
 	@Test(dataProvider = "searchDataHardCode")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		searchProduct(toSearch, productName, expectedPrice);
+		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataHardCode")

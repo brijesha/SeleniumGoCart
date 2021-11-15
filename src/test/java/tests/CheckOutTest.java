@@ -1,24 +1,20 @@
 package tests;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.fail;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import util.Utility;
 
-public class CheckOutTest extends HomePageBaseTest {
+public class CheckOutTest extends BaseTest {
 
-	@Test()
+	@Test
 	public void checkOut() {
 		homePageObjects.addToCartBtn("Beans").click();
 		for (int i = 0; i < 3; i++) {

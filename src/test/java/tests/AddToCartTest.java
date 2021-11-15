@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class AddToCartTest extends HomePageBaseTest {
+public class AddToCartTest extends BaseTest {
 
 	@Test(dataProvider = "addToCartData", priority = 0)
 	public void addProduct(String itemName, int numItems, int totalPrice, boolean shouldPressIncrementBtn) {
@@ -34,7 +34,7 @@ public class AddToCartTest extends HomePageBaseTest {
 		// add to cart button text should be updated to "ADDED"
 		assertTrue(addToCartBtn.getText().contains("ADDED"), "Add to cart button text not updated");
 
-		verifyCartTotals(numItems, totalPrice);
+		homePageObjects.verifyCartTotals(numItems, totalPrice);
 	}
 
 	@Test(priority = 1)
@@ -64,7 +64,7 @@ public class AddToCartTest extends HomePageBaseTest {
 		homePageObjects.removeProductFromCart("Beans");
 
 		// verify cart total
-		verifyCartTotals(1, 144);
+		homePageObjects.verifyCartTotals(1, 144);
 	}
 
 	@DataProvider(name = "addToCartData")

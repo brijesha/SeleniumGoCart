@@ -6,11 +6,11 @@ import org.apache.commons.io.FileUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchProductCSVTest extends HomePageBaseTest {
-
+public class SearchProductCSVTest extends BaseTest {
+	
 	@Test(dataProvider = "searchDataCSV")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
-		searchProduct(toSearch, productName, expectedPrice);
+		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
 	}
 
 	@DataProvider(name = "searchDataCSV")

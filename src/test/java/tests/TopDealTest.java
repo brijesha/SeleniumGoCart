@@ -1,26 +1,17 @@
 package tests;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import util.Utility;
-
-public class TopDealTest extends HomePageBaseTest {
+public class TopDealTest extends BaseTest {
 
 	@Test
 	public void topDeal() throws InterruptedException {
@@ -41,7 +32,7 @@ public class TopDealTest extends HomePageBaseTest {
 		int numRows = topDealPageObject.rows().size();
 		assertEquals(numRows, 5, "Rows are missing.");
 		assertRows(expectedItemNameArr, numRows);
-		
+
 		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "true",
 				"First button in pagination is not disable.");
 		assertEquals(topDealPageObject.previousBtn().getAttribute("aria-disabled"), "true",
@@ -66,7 +57,7 @@ public class TopDealTest extends HomePageBaseTest {
 		// click number 2
 		dropdown.selectByValue("5");
 		topDealPageObject.paginationBtn("2").click();
-		assertEquals(topDealPageObject.pineapple().getText(), "Pineapple","Pinepple not found in the table.");
+		assertEquals(topDealPageObject.pineapple().getText(), "Pineapple", "Pinepple not found in the table.");
 		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "false",
 				"First button in pagination is not disable.");
 		assertEquals(topDealPageObject.previousBtn().getAttribute("aria-disabled"), "false",
@@ -75,8 +66,8 @@ public class TopDealTest extends HomePageBaseTest {
 				"Next is not enabled.");
 		assertEquals(topDealPageObject.nextLastBtn("Last").getAttribute("aria-disabled"), "false",
 				"Last is not enabled.");
-		
-		// search Almond 
+
+		// search Almond
 		topDealPageObject.search().click();
 		topDealPageObject.search().sendKeys("Almond");
 		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "true",
@@ -87,13 +78,13 @@ public class TopDealTest extends HomePageBaseTest {
 				"Next is not enabled.");
 		assertEquals(topDealPageObject.nextLastBtn("Last").getAttribute("aria-disabled"), "true",
 				"Last is not enabled.");
-		assertEquals(topDealPageObject.rows().size(),1, "Number of row is not 1.");
-		
+		assertEquals(topDealPageObject.rows().size(), 1, "Number of row is not 1.");
+
 		topDealPageObject.search().clear();
-		
+
 		// sort by veg/Fruit name
 		topDealPageObject.productHeader().click();
-		String[] sortItemsArr = {"Almond","Apple","Banana","Beans"};
+		String[] sortItemsArr = { "Almond", "Apple", "Banana", "Beans" };
 		assertRows(sortItemsArr, 4);
 		// most costly item in table
 		topDealPageObject.discountPriceHeader().click();
@@ -101,15 +92,15 @@ public class TopDealTest extends HomePageBaseTest {
 		String costlyItem = topDealPageObject.rows().get(0).findElement(By.xpath("td[1]")).getText();
 		assertEquals(costlyItem, "Cherry", "Most costly item isn't cherry.");
 		topDealPageObject.productHeader().click();
-		
-		//click last button and assert rows
+
+		// click last button and assert rows
 		topDealPageObject.nextLastBtn("Last").click();
-		String[] lastItemsArr = {"Rice", "Strawberry","Tomato","Wheat"};
+		String[] lastItemsArr = { "Rice", "Strawberry", "Tomato", "Wheat" };
 		assertRows(lastItemsArr, 4);
-		
+
 	}
-	
-	public void assertRows(String[] expectedArr, int numRows ){
+
+	public void assertRows(String[] expectedArr, int numRows) {
 		List<WebElement> rows = topDealPageObject.rows();
 		for (int i = 0; i < numRows; i++) {
 			WebElement row = rows.get(i);
