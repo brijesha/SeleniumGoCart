@@ -10,28 +10,43 @@ public class CheckoutPageObjects {
 
 	WebDriver driver;
 
-	By countryDd = By.xpath("//select[@style='width: 200px;']");
-	By termCb = By.cssSelector(".chkAgree");
-	By proceedBtn = By.tagName("button");
-	By errorMsg = By.xpath("//span[@class='errorAlert']/b");
+	By rows = By.xpath("//*[@class='cartTable']/tbody/tr");
+	By numOfItems = By.xpath("//div[@class='products']/div/b[1]");
+	By totalAmount = By.cssSelector(".totAmt");
+	By discountPerc = By.cssSelector(".discountPerc");
+	By totalAfterDiscount = By.cssSelector(".discountAmt");
+	By placeOrderBtn = By.xpath("//button[text()='Place Order']");
 
 	public CheckoutPageObjects(WebDriver driver) {
 		this.driver = driver;
 	}
 
-	public WebElement countryDd() {
-		return driver.findElement(countryDd);
+	public List<WebElement> rows() {
+		return driver.findElements(rows);
 	}
 	
-	public WebElement termCheckBox() {
-		return driver.findElement(termCb);
+	public WebElement row(int position) {
+		return driver.findElement(By.xpath("//*[@class='cartTable']/tbody/tr["+position+"]"));
+	}
+
+	public String numOfItems() {
+		System.out.println(driver.findElement(numOfItems).getText());
+		return driver.findElement(numOfItems).getText();
+	}
+
+	public String totalAmount() {
+		return driver.findElement(totalAmount).getText();
+	}
+
+	public String discountPerc() {
+		return driver.findElement(discountPerc).getText();
+	}
+
+	public String totalAfterDiscount() {
+		return driver.findElement(totalAfterDiscount).getText();
 	}
 	
-	public WebElement proccedBtn() {
-		return driver.findElement(proceedBtn);
-	}
-	
-	public WebElement errorMsg() {
-		return driver.findElement(errorMsg);
+	public WebElement placeOrderBtn() {
+		return driver.findElement(placeOrderBtn);
 	}
 }

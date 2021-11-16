@@ -8,57 +8,83 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import util.Utility;
 
 public class CheckOutTest extends BaseTest {
 
-	@Test
-	public void checkOut() {
+	@Test(priority = 0)
+	public void checkout1Test() {
+		// add items to cart
 		homePageObjects.addToCartBtn("Beans").click();
 		for (int i = 0; i < 3; i++) {
 			homePageObjects.addToCartBtn("Cucumber").click();
 		}
+
 		// check price value
 		String priceText = homePageObjects.getPriceText();
 		Utility.checkStrEqualsInt(priceText, 226, "Price");
 
+		// open cart pop-up
 		homePageObjects.cartImgClick();
+
+		// proceed to checkout page
 		homePageObjects.checkoutBtn().click();
+		
+		// verify number of items
+		List<WebElement> rowElems = checkoutPageObjects.rows();
+		int numRows = rowElems.size();
+		assertEquals(numRows, 2, "Number of items mismatch.");
+	}
 
-		List<WebElement> rows = placeOrderPageObjects.rows();
-		int numRows = placeOrderPageObjects.rows().size();
-		assertEquals(numRows, 2, "Rows missing in place order table.");
-		for (int i = 0; i < rows.size() - 1; i++) {
-			String[] productName = rows.get(i).findElement(By.className("product-name")).getText().split(" ");
-			assertEquals(productName[0], "Beans", productName + " not available in place order table.");
+	@Test(dataProvider = "rowsData", priority = 1)
+	public void verifyRowsTest(String expectedProductName, int expectedQuantity, int expectedAmount, int position) {
+		WebElement rowElem = checkoutPageObjects.row(position-1);
 
-			int productQuantity = Integer.parseInt(rows.get(i).findElement(By.className("quantity")).getText());
-			assertEquals(productQuantity, 1, productQuantity + " not available in place order table.");
+		String productName = rowElem.findElement(By.className("product-name")).getText().split(" ")[0];
+		assertEquals(productName, expectedProductName, productName + " not present.");
 
-			int productAmount = Integer.parseInt(rows.get(i).findElement(By.className("amount")).getText());
-			assertEquals(productAmount, 82, productAmount + " not available in place order table.");
+		int productQuantity = Integer.parseInt(rowElem.findElement(By.className("quantity")).getText());
+		assertEquals(productQuantity, expectedQuantity, productQuantity + " not present.");
+
+		int productAmount = Integer.parseInt(rowElem.findElement(By.className("amount")).getText());
+		assertEquals(productAmount, expectedAmount, productAmount + " not present.");
+	}
+
+	@DataProvider(name = "rowsData")
+	public Object[][] rowsData() {
+		return new Object[][] { { "Beans", 1, 82, 1 }, { "Cucumber", 3, 48, 2 } };
+	}
+
+	@Test(priority = 2)
+	public void checkout2Test() {
+		// verify totals
+		assertEquals(Integer.parseInt(checkoutPageObjects.totalAmount()), 226,
+				"Total amount mismatch.");
+		assertEquals(checkoutPageObjects.discountPerc(), "0%", "Discount percentage mismatch.");
+		assertEquals(Integer.parseInt(checkoutPageObjects.totalAfterDiscount()), 226,
+				"Total after discount amount mismatch.");
+
+		// proceed to Terms and Condition page 
+		checkoutPageObjects.placeOrderBtn().click();
+
+		// select country
+		Select countrySelect = new Select(tcPageObjects.countrySelect());
+		countrySelect.selectByValue("United States");
+		
+		// verify error scenario
+		tcPageObjects.proceedBtn().click();
+		if (tcPageObjects.errorMsg().getText() == null) {
+			fail("Terms and Condition error message is not displaying");
 		}
-
-		// assertEquals(Integer.parseInt(placeOrderPageObjects.numOfItems()), 2,"Number
-		// of items mismatch in place order table.");
-		assertEquals(Integer.parseInt(placeOrderPageObjects.totalAmount()), 226,
-				"Total amount mismatch in place order table.");
-		assertEquals(placeOrderPageObjects.discount(), "0%", "Discount amount mismatch in place order table.");
-		assertEquals(Integer.parseInt(placeOrderPageObjects.totalDiscount()), 226,
-				"Total discount amount mismatch in place order table.");
-
-		placeOrderPageObjects.placeOrderBtn().click();
-
-		Select countyDD = new Select(checkoutPageObject.countryDd());
-		countyDD.selectByValue("United States");
-		checkoutPageObject.proccedBtn().click();
-		if (checkoutPageObject.errorMsg().getText() == null) {
-			fail("Terms and Condition error message is not dispalying");
-		}
-		checkoutPageObject.termCheckBox().click();
-		checkoutPageObject.proccedBtn().click();
+		
+		// click terms and condition
+		tcPageObjects.termCheckBox().click();
+		
+		// proceed to confirmation page
+		tcPageObjects.proceedBtn().click();
 
 	}
 

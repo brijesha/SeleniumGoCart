@@ -7,18 +7,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
-import pageObjects.CheckoutPageObjects;
+import pageObjects.TCPageObjects;
 import pageObjects.HomePageObjects;
-import pageObjects.PlaceOrderPageObjects;
+import pageObjects.CheckoutPageObjects;
 import pageObjects.TopDealsPageObjects;
 
 public class BaseTest {
 
 	WebDriver driver;
 	HomePageObjects homePageObjects;
-	PlaceOrderPageObjects placeOrderPageObjects;
-	CheckoutPageObjects checkoutPageObject;
-	TopDealsPageObjects topDealPageObject;
+	CheckoutPageObjects checkoutPageObjects;
+	TCPageObjects tcPageObjects;
+	TopDealsPageObjects topDealsPageObjects;
 
 	@BeforeTest
 	public void createDriver() {
@@ -30,9 +30,9 @@ public class BaseTest {
 		
 		// Provide value to object
 		homePageObjects = new HomePageObjects(driver);
-		placeOrderPageObjects = new PlaceOrderPageObjects(driver);
-		checkoutPageObject = new CheckoutPageObjects(driver);
-		topDealPageObject = new TopDealsPageObjects(driver);
+		checkoutPageObjects = new CheckoutPageObjects(driver);
+		tcPageObjects = new TCPageObjects(driver);
+		topDealsPageObjects = new TopDealsPageObjects(driver);
 	}
 
 	@AfterTest
