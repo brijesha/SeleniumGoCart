@@ -18,7 +18,7 @@ public class TopDealTest extends BaseTest {
 		String[] expectedItemNameArr = { "Wheat", "Tomato", "Strawberry", "Rice", "Potato" };
 		String[] pagination = { "1", "2", "3", "4", "Next", "Last" };
 
-		topDealPageObject.topDeal().click();
+		topDealsPageObjects.topDeal().click();
 
 		// Get the current window handle
 		String windowHandle = driver.getWindowHandle();
@@ -29,21 +29,21 @@ public class TopDealTest extends BaseTest {
 		// swith to another tab
 		driver.switchTo().window((String) tabs.get(1));
 
-		int numRows = topDealPageObject.rows().size();
+		int numRows = topDealsPageObjects.rows().size();
 		assertEquals(numRows, 5, "Rows are missing.");
 		assertRows(expectedItemNameArr, numRows);
 
-		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "true",
+		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "true",
 				"First button in pagination is not disable.");
-		assertEquals(topDealPageObject.previousBtn().getAttribute("aria-disabled"), "true",
+		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "true",
 				"Previous button in pagination is not disable.");
 
 		for (int i = 0; i < pagination.length; i++) {
 			if ((pagination[i].equals("Next")) || (pagination[i]).equals("Last")) {
-				assertEquals(topDealPageObject.nextLastBtn(pagination[i]).getAttribute("aria-disabled"), "false",
+				assertEquals(topDealsPageObjects.nextLastBtn(pagination[i]).getAttribute("aria-disabled"), "false",
 						pagination[i] + " is not enabled.");
 			} else {
-				assertTrue(topDealPageObject.paginationBtn(pagination[i]).isEnabled(),
+				assertTrue(topDealsPageObjects.paginationBtn(pagination[i]).isEnabled(),
 						pagination[i] + " is not enabled.");
 			}
 		}
@@ -52,56 +52,56 @@ public class TopDealTest extends BaseTest {
 		WebElement staticDropdwn = driver.findElement(By.id("page-menu"));
 		Select dropdown = new Select(staticDropdwn);
 		dropdown.selectByValue("10");
-		assertEquals(topDealPageObject.rows().size(), 10, "Rows are missing.");
+		assertEquals(topDealsPageObjects.rows().size(), 10, "Rows are missing.");
 
 		// click number 2
 		dropdown.selectByValue("5");
-		topDealPageObject.paginationBtn("2").click();
-		assertEquals(topDealPageObject.pineapple().getText(), "Pineapple", "Pinepple not found in the table.");
-		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "false",
+		topDealsPageObjects.paginationBtn("2").click();
+		assertEquals(topDealsPageObjects.pineapple().getText(), "Pineapple", "Pinepple not found in the table.");
+		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "false",
 				"First button in pagination is not disable.");
-		assertEquals(topDealPageObject.previousBtn().getAttribute("aria-disabled"), "false",
+		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "false",
 				"Previous button in pagination is not disable.");
-		assertEquals(topDealPageObject.nextLastBtn("Next").getAttribute("aria-disabled"), "false",
+		assertEquals(topDealsPageObjects.nextLastBtn("Next").getAttribute("aria-disabled"), "false",
 				"Next is not enabled.");
-		assertEquals(topDealPageObject.nextLastBtn("Last").getAttribute("aria-disabled"), "false",
+		assertEquals(topDealsPageObjects.nextLastBtn("Last").getAttribute("aria-disabled"), "false",
 				"Last is not enabled.");
 
 		// search Almond
-		topDealPageObject.search().click();
-		topDealPageObject.search().sendKeys("Almond");
-		assertEquals(topDealPageObject.firstBtn().getAttribute("aria-disabled"), "true",
+		topDealsPageObjects.search().click();
+		topDealsPageObjects.search().sendKeys("Almond");
+		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "true",
 				"First button in pagination is not disable.");
-		assertEquals(topDealPageObject.previousBtn().getAttribute("aria-disabled"), "true",
+		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "true",
 				"Previous button in pagination is not disable.");
-		assertEquals(topDealPageObject.nextLastBtn("Next").getAttribute("aria-disabled"), "true",
+		assertEquals(topDealsPageObjects.nextLastBtn("Next").getAttribute("aria-disabled"), "true",
 				"Next is not enabled.");
-		assertEquals(topDealPageObject.nextLastBtn("Last").getAttribute("aria-disabled"), "true",
+		assertEquals(topDealsPageObjects.nextLastBtn("Last").getAttribute("aria-disabled"), "true",
 				"Last is not enabled.");
-		assertEquals(topDealPageObject.rows().size(), 1, "Number of row is not 1.");
+		assertEquals(topDealsPageObjects.rows().size(), 1, "Number of row is not 1.");
 
-		topDealPageObject.search().clear();
+		topDealsPageObjects.search().clear();
 
 		// sort by veg/Fruit name
-		topDealPageObject.productHeader().click();
+		topDealsPageObjects.productHeader().click();
 		String[] sortItemsArr = { "Almond", "Apple", "Banana", "Beans" };
 		assertRows(sortItemsArr, 4);
 		// most costly item in table
-		topDealPageObject.discountPriceHeader().click();
-		topDealPageObject.discountPriceHeader().click();
-		String costlyItem = topDealPageObject.rows().get(0).findElement(By.xpath("td[1]")).getText();
+		topDealsPageObjects.discountPriceHeader().click();
+		topDealsPageObjects.discountPriceHeader().click();
+		String costlyItem = topDealsPageObjects.rows().get(0).findElement(By.xpath("td[1]")).getText();
 		assertEquals(costlyItem, "Cherry", "Most costly item isn't cherry.");
-		topDealPageObject.productHeader().click();
+		topDealsPageObjects.productHeader().click();
 
 		// click last button and assert rows
-		topDealPageObject.nextLastBtn("Last").click();
+		topDealsPageObjects.nextLastBtn("Last").click();
 		String[] lastItemsArr = { "Rice", "Strawberry", "Tomato", "Wheat" };
 		assertRows(lastItemsArr, 4);
 
 	}
 
 	public void assertRows(String[] expectedArr, int numRows) {
-		List<WebElement> rows = topDealPageObject.rows();
+		List<WebElement> rows = topDealsPageObjects.rows();
 		for (int i = 0; i < numRows; i++) {
 			WebElement row = rows.get(i);
 			WebElement firstColum = row.findElement(By.xpath("td[1]"));

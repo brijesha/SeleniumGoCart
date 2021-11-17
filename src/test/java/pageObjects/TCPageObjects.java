@@ -14,6 +14,7 @@ public class TCPageObjects {
 	By termCheckBox = By.cssSelector(".chkAgree");
 	By proceedBtn = By.tagName("button");
 	By errorMsg = By.xpath("//span[@class='errorAlert']/b");
+	By confirmMsg = By.xpath("//div[@class='products']//span");
 
 	public TCPageObjects(WebDriver driver) {
 		this.driver = driver;
@@ -33,5 +34,9 @@ public class TCPageObjects {
 	
 	public WebElement errorMsg() {
 		return driver.findElement(errorMsg);
+	}
+	
+	public WebElement confirmMsg() {
+		return driver.findElement(confirmMsg);
 	}
 }
