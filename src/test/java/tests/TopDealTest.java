@@ -14,99 +14,122 @@ import org.testng.annotations.Test;
 public class TopDealTest extends BaseTest {
 
 	@Test
-	public void topDeal() throws InterruptedException {
-		String[] expectedItemNameArr = { "Wheat", "Tomato", "Strawberry", "Rice", "Potato" };
-		String[] pagination = { "1", "2", "3", "4", "Next", "Last" };
+	public void topDealTest() throws InterruptedException {
 
+		// open topdeal page in a new tab
 		topDealsPageObjects.topDeal().click();
 
-		// Get the current window handle
-		String windowHandle = driver.getWindowHandle();
-
-		// Get the list of window handles
+		// Get the list of window handles (tabs)
 		ArrayList tabs = new ArrayList(driver.getWindowHandles());
 
-		// swith to another tab
-		driver.switchTo().window((String) tabs.get(1));
+		// switch control to topdeal page tab
+		String topDealTab = (String) tabs.get(1);
+		driver.switchTo().window(topDealTab);
 
+		// verify number of rows
 		int numRows = topDealsPageObjects.rows().size();
-		assertEquals(numRows, 5, "Rows are missing.");
-		assertRows(expectedItemNameArr, numRows);
+		assertEquals(numRows, 5, "Rows mismatch.");
 
-		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "true",
-				"First button in pagination is not disable.");
-		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "true",
-				"Previous button in pagination is not disable.");
+		// verify items in table
+		String[] expectedItemNameArr = { "Wheat", "Tomato", "Strawberry", "Rice", "Potato" };
+		assertRows(expectedItemNameArr);
 
+		// verify disable buttons
+		checkEnableDisableButtons("First", "true");
+		checkEnableDisableButtons("Previous", "true");
+
+		// verify enable buttons
+		String[] pagination = { "1", "2", "3", "4", "Next", "Last" };
 		for (int i = 0; i < pagination.length; i++) {
 			if ((pagination[i].equals("Next")) || (pagination[i]).equals("Last")) {
-				assertEquals(topDealsPageObjects.nextLastBtn(pagination[i]).getAttribute("aria-disabled"), "false",
-						pagination[i] + " is not enabled.");
+				checkEnableDisableButtons(pagination[i], "false");
+
 			} else {
 				assertTrue(topDealsPageObjects.paginationBtn(pagination[i]).isEnabled(),
 						pagination[i] + " is not enabled.");
 			}
 		}
 
-		// Change page size to 10
-		WebElement staticDropdwn = driver.findElement(By.id("page-menu"));
-		Select dropdown = new Select(staticDropdwn);
-		dropdown.selectByValue("10");
-		assertEquals(topDealsPageObjects.rows().size(), 10, "Rows are missing.");
+		// change page size
+		WebElement pageSizeSelectElem = topDealsPageObjects.pageSizeSelect();
+		Select pageSizeSelect = new Select(pageSizeSelectElem);
+		pageSizeSelect.selectByValue("10");
+		assertEquals(topDealsPageObjects.rows().size(), 10, "Rows mismatch.");
+		
+		// revert back page size to default
+		pageSizeSelect.selectByValue("5");
 
-		// click number 2
-		dropdown.selectByValue("5");
+		// navigate to 2nd page
 		topDealsPageObjects.paginationBtn("2").click();
-		assertEquals(topDealsPageObjects.pineapple().getText(), "Pineapple", "Pinepple not found in the table.");
-		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "false",
-				"First button in pagination is not disable.");
-		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "false",
-				"Previous button in pagination is not disable.");
-		assertEquals(topDealsPageObjects.nextLastBtn("Next").getAttribute("aria-disabled"), "false",
-				"Next is not enabled.");
-		assertEquals(topDealsPageObjects.nextLastBtn("Last").getAttribute("aria-disabled"), "false",
-				"Last is not enabled.");
+
+		// verify item name
+		assertEquals(topDealsPageObjects.pineapple(), "Pineapple", "Pinepple not found in the table.");
+
+		// verify enable buttons
+		checkEnableDisableButtons("First", "false");
+		checkEnableDisableButtons("Prevoius", "false");
+		checkEnableDisableButtons("Next", "false");
+		checkEnableDisableButtons("Last", "false");
 
 		// search Almond
 		topDealsPageObjects.search().click();
 		topDealsPageObjects.search().sendKeys("Almond");
-		assertEquals(topDealsPageObjects.firstBtn().getAttribute("aria-disabled"), "true",
-				"First button in pagination is not disable.");
-		assertEquals(topDealsPageObjects.previousBtn().getAttribute("aria-disabled"), "true",
-				"Previous button in pagination is not disable.");
-		assertEquals(topDealsPageObjects.nextLastBtn("Next").getAttribute("aria-disabled"), "true",
-				"Next is not enabled.");
-		assertEquals(topDealsPageObjects.nextLastBtn("Last").getAttribute("aria-disabled"), "true",
-				"Last is not enabled.");
-		assertEquals(topDealsPageObjects.rows().size(), 1, "Number of row is not 1.");
+		checkEnableDisableButtons("First", "true");
+		checkEnableDisableButtons("Previous", "true");
+		checkEnableDisableButtons("Next", "true");
+		checkEnableDisableButtons("Last", "true");
 
+		// check number of rows
+		assertEquals(topDealsPageObjects.rows().size(), 1, "Rows mismatch.");
+
+		// delete search item
 		topDealsPageObjects.search().clear();
 
 		// sort by veg/Fruit name
 		topDealsPageObjects.productHeader().click();
 		String[] sortItemsArr = { "Almond", "Apple", "Banana", "Beans" };
-		assertRows(sortItemsArr, 4);
-		// most costly item in table
+		assertRows(sortItemsArr);
+
+		// verify most costly item in table
 		topDealsPageObjects.discountPriceHeader().click();
 		topDealsPageObjects.discountPriceHeader().click();
-		String costlyItem = topDealsPageObjects.rows().get(0).findElement(By.xpath("td[1]")).getText();
-		assertEquals(costlyItem, "Cherry", "Most costly item isn't cherry.");
+		String mostCostlyItem = topDealsPageObjects.firstRowColumnValue();
+		assertEquals(mostCostlyItem, "Cherry", "Most costly item not found.");
 		topDealsPageObjects.productHeader().click();
 
 		// click last button and assert rows
 		topDealsPageObjects.nextLastBtn("Last").click();
 		String[] lastItemsArr = { "Rice", "Strawberry", "Tomato", "Wheat" };
-		assertRows(lastItemsArr, 4);
+		assertRows(lastItemsArr);
 
 	}
 
-	public void assertRows(String[] expectedArr, int numRows) {
+	// verify enable disable buttons
+	public void checkEnableDisableButtons(String btnName, String isDisabled) {
+		if (btnName.equals("First") || btnName.equals("Previous")) {
+			String lastMessage = "true".equals(isDisabled) ? "disabled" : "enabled";
+			assertEquals(topDealsPageObjects.firstPreviousBtn(btnName).getAttribute("aria-disabled"), isDisabled,
+					btnName + " isn't " + lastMessage);
+		}
+		if (btnName.equals("Next") || btnName.equals("Last")) {
+			if ("true".equals(isDisabled)) {
+				assertEquals(topDealsPageObjects.nextLastBtn(btnName).getAttribute("aria-disabled"), isDisabled,
+						btnName + " isn't disable.");
+			} else {
+				assertEquals(topDealsPageObjects.nextLastBtn(btnName).getAttribute("aria-disabled"), isDisabled,
+						btnName + " isn't enable.");
+			}
+		}
+	}
+
+	// verify item names in table
+	public void assertRows(String[] expectedItemNameArr) {
 		List<WebElement> rows = topDealsPageObjects.rows();
-		for (int i = 0; i < numRows; i++) {
+		for (int i = 0; i < expectedItemNameArr.length; i++) {
 			WebElement row = rows.get(i);
-			WebElement firstColum = row.findElement(By.xpath("td[1]"));
-			String itemName = firstColum.getText();
-			assertEquals(itemName, expectedArr[i], "Product name mismatch.");
+			// first column in table
+			String itemName = row.findElement(By.xpath("td[1]")).getText();
+			assertEquals(itemName, expectedItemNameArr[i], "Product name mismatch.");
 		}
 	}
 
