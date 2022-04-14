@@ -1,4 +1,4 @@
-package pageObjects;
+package com.goCart.qa.pages;
 
 import java.util.List;
 
@@ -12,14 +12,13 @@ public class TopDealsPageObjects {
 
 	By topDeal = By.xpath("//a[@href='#/offers']");
 	By rows = By.cssSelector("tbody tr");
-	//By firstBtn = By.xpath("//a[@aria-label='First']");
-	//By previousBtn = By.xpath("//a[@aria-label='Previous']");
 	By pineapple = By.xpath("//td[contains(text(),'Pineapple')]");
-	By search = By.id("search-field");
+	By search = By.cssSelector("#search-field");
 	By productHeader = By.xpath("//thead/tr[1]/th[1]");
 	By discountPriceHeader = By.xpath("//thead/tr[1]/th[3]");
 	By pageSize = By.id("page-menu");
 	By firstColumn = By.xpath("td[1]");
+	
 	
 	public TopDealsPageObjects(WebDriver driver) {
 		// TODO Auto-generated constructor stub
@@ -33,14 +32,6 @@ public class TopDealsPageObjects {
 	public List<WebElement> rows() {
 		return driver.findElements(rows);
 	}
-	
-	/*public WebElement firstBtn() {
-		return driver.findElement(firstBtn);
-	}
-	
-	public WebElement previousBtn() {
-		return driver.findElement(previousBtn);
-	}*/
 	
 	public WebElement firstPreviousBtn(String val) {
 		return driver.findElement(By.xpath("//a[@aria-label='"+val+"']"));
@@ -74,7 +65,8 @@ public class TopDealsPageObjects {
 		return driver.findElement(pageSize);
 	}
 	
-	public String firstRowColumnValue() {
-		return rows().get(0).findElement(firstColumn).getText();
+	public String rowColumnValue(int i) {
+		return rows().get(i).findElement(firstColumn).getText();
 	}
+
 }

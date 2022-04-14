@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Practice GoCart Test Automation Test suit">
+  <test name="Practice GoCart app Test Cases">
+      
+    <classes>
+    	<class name="com.goCart.qa.testcases.HomePageLoadTest"/>
+    	<class name="com.goCart.qa.testcases.SearchProductHardCodeTest"/>
+    	<class name="com.goCart.qa.testcases.SearchProductExcelTest"/>
+       <class name="com.goCart.qa.testcases.AddToCartTest"/>
+       <class name="com.goCart.qa.testcases.CheckOutTest"/>
+       <class name="com.goCart.qa.testcases.TopDealTest"/>
+       <class name="com.goCart.qa.testcases.SearchProductJSONTest"/>
+       <class name="com.goCart.qa.testcases.SearchProductCSVTest"/>
+    </classes>
+     
+  </test> <!-- Test -->
+  
+  
+</suite> <!-- Suite -->

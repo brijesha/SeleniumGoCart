@@ -1,4 +1,4 @@
-package tests;
+package com.goCart.qa.testcases;
 
 import static org.testng.Assert.assertEquals;
 
@@ -6,18 +6,39 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import util.Utility;
+import com.goCart.qa.base.BaseTest;
+import com.goCart.qa.pages.CheckoutPageObjects;
+import com.goCart.qa.pages.HomePageObjects;
+import com.goCart.qa.pages.TCPageObjects;
+import com.goCart.qa.util.Utility;
 
 public class CheckOutTest extends BaseTest {
+	public CheckOutTest() {
+		super();
+	}
+	
+	@BeforeClass
+	public void setup() {
+		initialization();
+		homePageObjects = new HomePageObjects(driver);
+		checkoutPageObjects = new CheckoutPageObjects(driver);
+		tcPageObjects = new TCPageObjects(driver);
+	}
 
 	@Test(priority = 0)
 	public void checkout1Test() {
 		// add items to cart
 		homePageObjects.addToCartBtn("Beans").click();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) { 
 			homePageObjects.addToCartBtn("Cucumber").click();
 		}
 
@@ -80,6 +101,16 @@ public class CheckOutTest extends BaseTest {
 		assertEquals(confirmationMsg,"Thank you, your order has been placed successfully\n"+
 				"You'll be redirected to Home page shortly!!","Confirmation message mismatch.");
 		
+	}
+	
+	@AfterClass
+	public void tearDown() {
+		try {
+			driver.close();
+		}catch(Exception e1) {}
+		try {
+			driver.quit();
+		}catch(Exception e1) {}	
 	}
 
 }

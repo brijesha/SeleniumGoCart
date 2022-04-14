@@ -1,14 +1,14 @@
-package pageObjects;
+package com.goCart.qa.pages;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import com.goCart.qa.base.BaseTest;
+import com.goCart.qa.util.Utility;
 
-import util.Utility;
-
-public class HomePageObjects {
+public class HomePageObjects extends BaseTest {
 
 	WebDriver driver;
 
@@ -106,7 +106,7 @@ public class HomePageObjects {
 		checkProductExist(productName, expectedPrice);
 	}
 
-	// varify item and price value in header
+	// Verify item and price value in header
 	public void verifyCartTotals(int numItems, int price) {
 		// check items value
 		String itemsText = getItemsText();

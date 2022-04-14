@@ -1,4 +1,4 @@
-package tests;
+package com.goCart.qa.testcases;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -7,11 +7,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.goCart.qa.base.BaseTest;
+import com.goCart.qa.pages.HomePageObjects;
+import com.goCart.qa.pages.TopDealsPageObjects;
+
 public class TopDealTest extends BaseTest {
+	public TopDealTest() {
+		super();
+	}
+	
+	@BeforeMethod
+	public void setup() {
+		initialization();
+		topDealsPageObjects = new TopDealsPageObjects(driver);
+	}
 
 	@Test
 	public void topDealTest() throws InterruptedException {
@@ -39,15 +55,12 @@ public class TopDealTest extends BaseTest {
 		checkEnableDisableButtons("Previous", "true");
 
 		// verify enable buttons
-		String[] pagination = { "1", "2", "3", "4", "Next", "Last" };
+		checkEnableDisableButtons("Next", "false");
+		checkEnableDisableButtons("Last", "false");
+		String[] pagination = { "1", "2", "3", "4" };
 		for (int i = 0; i < pagination.length; i++) {
-			if ((pagination[i].equals("Next")) || (pagination[i]).equals("Last")) {
-				checkEnableDisableButtons(pagination[i], "false");
-
-			} else {
-				assertTrue(topDealsPageObjects.paginationBtn(pagination[i]).isEnabled(),
-						pagination[i] + " is not enabled.");
-			}
+			assertTrue(topDealsPageObjects.paginationBtn(pagination[i]).isEnabled(),
+					pagination[i] + " is not enabled.");
 		}
 
 		// change page size
@@ -55,7 +68,7 @@ public class TopDealTest extends BaseTest {
 		Select pageSizeSelect = new Select(pageSizeSelectElem);
 		pageSizeSelect.selectByValue("10");
 		assertEquals(topDealsPageObjects.rows().size(), 10, "Rows mismatch.");
-		
+
 		// revert back page size to default
 		pageSizeSelect.selectByValue("5");
 
@@ -83,7 +96,8 @@ public class TopDealTest extends BaseTest {
 		assertEquals(topDealsPageObjects.rows().size(), 1, "Rows mismatch.");
 
 		// delete search item
-		topDealsPageObjects.search().clear();
+		topDealsPageObjects.search().sendKeys(Keys.chord(Keys.COMMAND, "a"));
+		topDealsPageObjects.search().sendKeys(Keys.DELETE);
 
 		// sort by veg/Fruit name
 		topDealsPageObjects.productHeader().click();
@@ -93,7 +107,7 @@ public class TopDealTest extends BaseTest {
 		// verify most costly item in table
 		topDealsPageObjects.discountPriceHeader().click();
 		topDealsPageObjects.discountPriceHeader().click();
-		String mostCostlyItem = topDealsPageObjects.firstRowColumnValue();
+		String mostCostlyItem = topDealsPageObjects.rowColumnValue(0);
 		assertEquals(mostCostlyItem, "Cherry", "Most costly item not found.");
 		topDealsPageObjects.productHeader().click();
 
@@ -101,7 +115,16 @@ public class TopDealTest extends BaseTest {
 		topDealsPageObjects.nextLastBtn("Last").click();
 		String[] lastItemsArr = { "Rice", "Strawberry", "Tomato", "Wheat" };
 		assertRows(lastItemsArr);
-
+	}
+	
+	@AfterMethod
+	public void tearDown() {
+		try {
+			driver.close();
+		}catch(Exception e1) {}
+		try {
+			driver.quit();
+		}catch(Exception e1) {}	
 	}
 
 	// verify enable disable buttons
@@ -128,7 +151,7 @@ public class TopDealTest extends BaseTest {
 		for (int i = 0; i < expectedItemNameArr.length; i++) {
 			WebElement row = rows.get(i);
 			// first column in table
-			String itemName = row.findElement(By.xpath("td[1]")).getText();
+			String itemName = topDealsPageObjects.rowColumnValue(i);
 			assertEquals(itemName, expectedItemNameArr[i], "Product name mismatch.");
 		}
 	}

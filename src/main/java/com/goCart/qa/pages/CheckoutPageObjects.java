@@ -1,4 +1,4 @@
-package pageObjects;
+package com.goCart.qa.pages;
 
 import java.util.List;
 

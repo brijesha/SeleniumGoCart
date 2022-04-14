@@ -1,13 +1,30 @@
-package tests;
+package com.goCart.qa.testcases;
 
 import static org.testng.Assert.assertEquals;
 
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class HomePageLoadTest extends BaseTest {
+import com.goCart.qa.base.BaseTest;
+import com.goCart.qa.pages.HomePageObjects;
 
-	@Test(priority = 0)
+public class HomePageLoadTest extends BaseTest {
+	
+	public HomePageLoadTest() {
+		super();
+	}
+	
+	@BeforeClass
+	public void setup() {
+		initialization();
+		homePageObjects = new HomePageObjects(driver);
+	}
+	
+	@Test()
 	public void pageLoadTest() {
 		// open the cart pop-up
 		homePageObjects.cartImgClick();
@@ -22,9 +39,19 @@ public class HomePageLoadTest extends BaseTest {
 		homePageObjects.verifyCartTotals(0, 0);
 	}
 
-	@Test(dataProvider = "productData", priority = 1)
+	@Test(dataProvider = "productData")
 	public void checkProductTest(String productName, int expectedProductPrice) {
 		homePageObjects.checkProductExist(productName, expectedProductPrice);
+	}
+	
+	@AfterClass
+	public void tearDown() {
+		try {
+			driver.close();
+		}catch(Exception e1) {}
+		try {
+			driver.quit();
+		}catch(Exception e1) {}	
 	}
 
 	@DataProvider(name = "productData")
@@ -32,4 +59,5 @@ public class HomePageLoadTest extends BaseTest {
 		return new Object[][] { { "Brocolli", 120 }, { "Potato", 22 }, { "Mango", 75 } };
 	}
 
+	
 }

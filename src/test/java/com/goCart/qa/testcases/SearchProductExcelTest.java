@@ -1,20 +1,48 @@
-package tests;
+package com.goCart.qa.testcases;
 
 import static org.testng.Assert.fail;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.goCart.qa.base.BaseTest;
+import com.goCart.qa.pages.HomePageObjects;
+
 public class SearchProductExcelTest extends BaseTest {
+	
+	public SearchProductExcelTest() {
+		super();
+	}
+	
+	@BeforeClass
+	public void setup() {
+		initialization();
+		homePageObjects = new HomePageObjects(driver);
+	}
 
 	@Test(dataProvider = "searchDataExcel")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
 		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
+	}
+	
+	@AfterClass
+	public void tearDown() {
+		try {
+			driver.close();
+		}catch(Exception e1) {}
+		try {
+			driver.quit();
+		}catch(Exception e1) {}	
 	}
 
 	@DataProvider(name = "searchDataExcel")
@@ -25,7 +53,8 @@ public class SearchProductExcelTest extends BaseTest {
 
 		try {
 			// location of excelsheet
-			is = getClass().getResourceAsStream("/DataSheet.xlsx");
+			is = new FileInputStream(
+					"/Users/brijesha/eclipse-workspace/SeleniumGoCart/src/main/java/com/goCart/qa/testdata/DataSheet.xlsx");
 			// object of excelsheet
 			workbook = new XSSFWorkbook(is);
 

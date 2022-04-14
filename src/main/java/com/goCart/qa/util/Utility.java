@@ -1,4 +1,4 @@
-package util;
+package com.goCart.qa.util;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
