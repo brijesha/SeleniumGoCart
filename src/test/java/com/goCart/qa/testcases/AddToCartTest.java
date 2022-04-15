@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.goCart.qa.base.BaseTest;
@@ -29,8 +30,9 @@ public class AddToCartTest extends BaseTest {
 	}
 	
 	@BeforeClass
-	public void setup() {
-		initialization();
+	@Parameters("browser")
+	public void setup(String browser) {
+		initialization(browser);
 		homePageObjects = new HomePageObjects(driver);
 	}
 

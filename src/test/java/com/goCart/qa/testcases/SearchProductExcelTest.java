@@ -10,9 +10,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.goCart.qa.base.BaseTest;
@@ -25,13 +28,15 @@ public class SearchProductExcelTest extends BaseTest {
 	}
 	
 	@BeforeClass
-	public void setup() {
-		initialization();
+	@Parameters("browser")
+	public void setup(String browser) {
+		initialization(browser);
 		homePageObjects = new HomePageObjects(driver);
 	}
 
 	@Test(dataProvider = "searchDataExcel")
 	public void searchProductTest(String toSearch, String productName, int expectedPrice) {
+		System.out.println("child class2----");
 		homePageObjects.searchProduct(toSearch, productName, expectedPrice);
 	}
 	

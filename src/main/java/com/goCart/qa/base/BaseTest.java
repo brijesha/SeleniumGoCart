@@ -8,7 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import com.goCart.qa.pages.CheckoutPageObjects;
 import com.goCart.qa.pages.HomePageObjects;
@@ -39,16 +43,21 @@ public class BaseTest {
 
 	}
 
-	public static void initialization() {
-		String browserName = prop.getProperty("browser");
+	public void initialization(String browserName) {
+		//String browserName = prop.getProperty("browser");
 
-		if (browserName.equals("chrome")) {
+		if (browserName.equalsIgnoreCase("chrome")) {
 			System.setProperty("webdriver.chrome.driver", "/Users/brijesha/Selenium Drivers/chromedriver");
 			driver = new ChromeDriver();
-		} else if (browserName.equals("FF")) {
+			System.out.println("Base class----");
+		} else if (browserName.equalsIgnoreCase("firefox")) {
 			System.setProperty("webdriver.gecko.driver", "/Users/brijesha/Selenium Drivers/geckodriver");
 			driver = new FirefoxDriver();
+		}else if (browserName.equalsIgnoreCase("edge")) {
+			System.setProperty("webdriver.edge.driver", "/Users/brijesha/Selenium Drivers/msedgedriver");
+			driver = new EdgeDriver();
 		}
+		
 
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();

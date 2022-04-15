@@ -1,20 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Practice GoCart Test Automation Test suit">
-  <test name="Practice GoCart app Test Cases">
-      
-    <classes>
-    	<class name="com.goCart.qa.testcases.HomePageLoadTest"/>
-    	<class name="com.goCart.qa.testcases.SearchProductHardCodeTest"/>
-    	<class name="com.goCart.qa.testcases.SearchProductExcelTest"/>
-       <class name="com.goCart.qa.testcases.AddToCartTest"/>
-       <class name="com.goCart.qa.testcases.CheckOutTest"/>
-       <class name="com.goCart.qa.testcases.TopDealTest"/>
-       <class name="com.goCart.qa.testcases.SearchProductJSONTest"/>
-       <class name="com.goCart.qa.testcases.SearchProductCSVTest"/>
-    </classes>
-     
-  </test> <!-- Test -->
-  
-  
+<suite name="Practice GoCart Test Automation Test suit" parallel = "tests" thread-count ="3">
+
+	<test name="Practice GoCart chrome Test Cases">
+		<parameter name="browser" value="chrome" />
+
+		<classes>
+			<class name="com.goCart.qa.testcases.HomePageLoadTest" />
+			<class name="com.goCart.qa.testcases.SearchProductExcelTest" />
+			<class name="com.goCart.qa.testcases.AddToCartTest" />
+			<class name="com.goCart.qa.testcases.CheckOutTest" />
+			<class name="com.goCart.qa.testcases.TopDealTest" />
+
+			<!-- <class name="com.goCart.qa.testcases.SearchProductHardCodeTest" /> 
+				<class name="com.goCart.qa.testcases.SearchProductJSONTest" /> <class name="com.goCart.qa.testcases.SearchProductCSVTest" 
+				/> -->
+		</classes>
+
+	</test> <!-- Test -->
+	<test name="Practice GoCart firefox Test Cases">
+		<parameter name="browser" value="firefox" />
+
+		<classes>
+			<class name="com.goCart.qa.testcases.HomePageLoadTest" />
+			<class name="com.goCart.qa.testcases.SearchProductExcelTest" />
+			<class name="com.goCart.qa.testcases.AddToCartTest" />
+			<class name="com.goCart.qa.testcases.CheckOutTest" />
+			<class name="com.goCart.qa.testcases.TopDealTest" />
+
+			<!-- <class name="com.goCart.qa.testcases.SearchProductHardCodeTest" /> 
+				<class name="com.goCart.qa.testcases.SearchProductJSONTest" /> <class name="com.goCart.qa.testcases.SearchProductCSVTest" 
+				/> -->
+		</classes>
+
+	</test> <!-- Test -->
+	<!-- <test name="Practice GoCart app Test Cases"> <parameter name="browser" 
+		value="ie" /> <classes> <class name="com.goCart.qa.testcases.HomePageLoadTest" 
+		/> <class name="com.goCart.qa.testcases.SearchProductExcelTest" /> <class 
+		name="com.goCart.qa.testcases.AddToCartTest" /> <class name="com.goCart.qa.testcases.CheckOutTest" 
+		/> <class name="com.goCart.qa.testcases.TopDealTest" /> <class name="com.goCart.qa.testcases.SearchProductHardCodeTest" 
+		/> <class name="com.goCart.qa.testcases.SearchProductJSONTest" /> <class 
+		name="com.goCart.qa.testcases.SearchProductCSVTest" /> </classes> </test> 
+		Test -->
+	<!-- <test name="Practice GoCart app Test Cases">
+		<parameter name="browser" value="safari" />
+
+		<classes>
+			<class name="com.goCart.qa.testcases.HomePageLoadTest" />
+			<class name="com.goCart.qa.testcases.SearchProductExcelTest" />
+			<class name="com.goCart.qa.testcases.AddToCartTest" />
+			<class name="com.goCart.qa.testcases.CheckOutTest" />
+			<class name="com.goCart.qa.testcases.TopDealTest" />
+
+			<class name="com.goCart.qa.testcases.SearchProductHardCodeTest" /> 
+				<class name="com.goCart.qa.testcases.SearchProductJSONTest" /> <class name="com.goCart.qa.testcases.SearchProductCSVTest" 
+				/>
+		</classes>
+
+	</test> Test -->
+	<test name="Practice GoCart edge Test Cases">
+		<parameter name="browser" value="edge" />
+
+		<classes>
+			<class name="com.goCart.qa.testcases.HomePageLoadTest" />
+			<class name="com.goCart.qa.testcases.SearchProductExcelTest" />
+			<class name="com.goCart.qa.testcases.AddToCartTest" />
+			<class name="com.goCart.qa.testcases.CheckOutTest" />
+			<class name="com.goCart.qa.testcases.TopDealTest" />
+
+			<!-- <class name="com.goCart.qa.testcases.SearchProductHardCodeTest" /> 
+				<class name="com.goCart.qa.testcases.SearchProductJSONTest" /> <class name="com.goCart.qa.testcases.SearchProductCSVTest" 
+				/> -->
+		</classes>
+
+	</test> <!-- Test -->
+
+
 </suite> <!-- Suite -->

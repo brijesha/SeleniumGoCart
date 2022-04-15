@@ -10,8 +10,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.goCart.qa.base.BaseTest;
@@ -23,9 +28,10 @@ public class TopDealTest extends BaseTest {
 		super();
 	}
 	
-	@BeforeMethod
-	public void setup() {
-		initialization();
+	@BeforeClass
+	@Parameters("browser")
+	public void setup(String browser) {
+		initialization(browser);
 		topDealsPageObjects = new TopDealsPageObjects(driver);
 	}
 
@@ -117,7 +123,7 @@ public class TopDealTest extends BaseTest {
 		assertRows(lastItemsArr);
 	}
 	
-	@AfterMethod
+	@AfterClass
 	public void tearDown() {
 		try {
 			driver.close();
